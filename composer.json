@@ -5,7 +5,9 @@
     "keywords": ["payeer", "client"],
     "license": "MIT",
     "require": {
-        "php": "^8.1.1"
+        "php": "^8.1.1",
+        "guzzlehttp/guzzle": "^7.4",
+        "spatie/data-transfer-object": "^3.8"
     },
     "autoload": {
         "psr-4": {

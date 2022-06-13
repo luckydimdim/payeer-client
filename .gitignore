@@ -2,6 +2,7 @@ vendor/
 logs/
 php/
 nginx/
+.idea
 
 .log
 .ini
