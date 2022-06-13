@@ -2,6 +2,7 @@
 
 namespace Payeer;
 
+use Payeer\Requests\RequestBase;
 use Payeer\Requests\RequestFactory;
 use Payeer\Responses\ResponseBase;
 use Payeer\Responses\ResponseFactory;
@@ -16,32 +17,58 @@ class Service implements IService
      */
     private readonly ITransport $transport;
 
-    public function __construct(string $url, string $id, string $sign)
+    public function __construct(string $uri, string $id, string $sign)
     {
-        $this->transport = $this->createTransport($url, $id, $sign);
+        $this->transport = $this->createTransport($uri, $id, $sign);
     }
 
     /**
      * The magic method.
      * Instantiates corresponding Request and Response models.
      * Sends request to the Transport level.
-     * @param $method
-     * @param $args
+     * @param string $method
+     * @param array $args
      * @return ResponseBase
      * @throws \Exception
      */
-    public function __call($method, $args): ResponseBase
+    public function __call(string $method, array $args): ResponseBase
+    {
+        $request = $this->getRequest($method, ...$args);
+        $result = $this->transport->send($request);
+        $response = $this->getResponse($method, $result);
+
+        return $response;
+    }
+
+    /**
+     * Looks for corresponding Request and instantiates it
+     * @param string $method
+     * @param array $args
+     * @return RequestBase
+     * @throws \Exception
+     */
+    protected function getRequest(string $method, array $args): RequestBase
     {
         try {
             // Instantiates a proper Request class
             $request = RequestFactory::create($method, $args);
         } catch (\Exception $ex) {
             // TODO: handle Service layer exceptions and convert them to user level one
-            throw new \Exception('User exception...');
+            throw new \Exception('User exception... '. $ex->getMessage());
         }
 
-        $result = $this->transport->send($request);
+        return $request;
+    }
 
+    /**
+     * Finds corresponding Response and instantiates it
+     * @param string $method
+     * @param array $result
+     * @return ResponseBase
+     * @throws \Exception
+     */
+    protected function getResponse(string $method, array $result): ResponseBase
+    {
         try {
             // Instantiates a proper Response class
             // Auto maps properties
@@ -57,13 +84,13 @@ class Service implements IService
     /**
      * Helper function for testing.
      * Instantiates Transport object.
-     * @param string $url
+     * @param string $uri
      * @param string $id
      * @param string $sign
      * @return Transport
      */
-    protected function createTransport(string $url, string $id, string $sign): Transport
+    protected function createTransport(string $uri, string $id, string $sign): Transport
     {
-        return new Transport($url, $id, $sign);
+        return new Transport($uri, $id, $sign);
     }
 }

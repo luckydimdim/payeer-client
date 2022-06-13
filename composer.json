@@ -11,9 +11,27 @@
     },
     "autoload": {
         "psr-4": {
-            "Payeer\\": [ "src/" ]
+            "Payeer\\": [ "src/" ],
+            "Payeer\\Tests\\": [ "tests/" ]
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-mock": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "init-pest": [
+            "./vendor/bin/pest --init"
+        ],
+        "test": [
+            "./vendor/bin/pest"
+        ]
+    }
 }

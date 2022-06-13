@@ -16,18 +16,20 @@ class RequestFactory
      */
     public static function create($method, $args): RequestBase
     {
-        // TODO: validate $method
+        // TODO: validate $method param
 
         // Normalize
         $method = ucfirst($method);
 
         $className = '\Payeer\Requests\\' . $method . 'Request';
 
+        print_r($className);
+
         if (class_exists($className)) {
             return new $className($args);
         }
 
         // TODO: specify Exception
-        throw new \Exception('Requested service not found.');
+        throw new \Exception("Requested service $method not found.");
     }
 }

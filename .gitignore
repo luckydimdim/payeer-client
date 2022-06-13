@@ -9,3 +9,4 @@ nginx/
 docker-compose.yml
 Dockerfile
 composer.lock
+.phpunit.result.cache
