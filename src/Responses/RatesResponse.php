@@ -2,13 +2,28 @@
 
 namespace Payeer\Responses;
 
+use Payeer\Responses\Mappers\PairsMapper;
+use Payeer\Responses\Models\Pair;
+use Payeer\Responses\Models\Request;
+use Spatie\DataTransferObject\Attributes\CastWith;
+use Spatie\DataTransferObject\Attributes\MapFrom;
+use Spatie\DataTransferObject\Casters\ArrayCaster;
+
 /**
- * GetRates response model
+ * Rates response model
  */
 class RatesResponse extends ResponseBase
 {
-    public $limits;
-    public $interval_num;
-    public $limit;
-    public $pairs;
+    /**
+     * @var array<Request>
+     */
+    #[MapFrom('limits.requests')]
+    #[CastWith(ArrayCaster::class, itemType: Request::class)]
+    public array $limits = [];
+
+    /**
+     * @var array<Pair>
+     */
+    #[CastWith(PairsMapper::class)]
+    public array $pairs = [];
 }

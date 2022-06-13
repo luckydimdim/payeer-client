@@ -15,11 +15,11 @@ class Transport implements ITransport
     /**
      * @var Client HTTP client
      */
-    private Client $client;
+    protected Client $client;
 
-    public function __construct(string $url, string $id, string $sign)
+    public function __construct(string $uri, string $id, string $sign)
     {
-        $this->client = $this->createClient($url, $id, $sign);
+        $this->client = $this->createClient($uri, $id, $sign);
     }
 
     /**
@@ -49,17 +49,16 @@ class Transport implements ITransport
     }
 
     /**
-     * Instantiates HTTp Client object.
-     * Function required for testing.
-     * @param string $url
+     * Instantiates HTTP Client object. Function required for testing.
+     * @param string $uri
      * @param string $id
      * @param string $sign
      * @return Client
      */
-    protected function createClient(string $url, string $id, string $sign): Client
+    protected function createClient(string $uri, string $id, string $sign): Client
     {
         return new Client([
-            'base_uri' => $url,
+            'base_uri' => $uri,
             'headers' => [
                 'Accept' => 'application/json; charset=utf-8',
                 'API-ID' => $id,

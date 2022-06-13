@@ -9,5 +9,5 @@ use Spatie\DataTransferObject\DataTransferObject;
  */
 class ResponseBase extends DataTransferObject
 {
-
+    public bool $success = true;
 }
