@@ -1,0 +1,10 @@
+vendor/
+logs/
+php/
+nginx/
+
+.log
+.ini
+docker-compose.yml
+Dockerfile
+composer.lock
