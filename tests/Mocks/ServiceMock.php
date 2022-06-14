@@ -12,11 +12,6 @@ use Payeer\Transport;
  */
 class ServiceMock extends Service
 {
-    protected function createTransport(string $uri, string $id): Transport
-    {
-        return new TransportMock($uri, $id);
-    }
-
     public function getRequest(string $method, array $args): RequestBase
     {
         return parent::getRequest($method, $args);
@@ -25,5 +20,15 @@ class ServiceMock extends Service
     public function getResponse(string $method, array $result): ResponseBase
     {
         return parent::getResponse($method, $result);
+    }
+
+    public function getTransport(): TransportMock
+    {
+        return $this->transport;
+    }
+
+    protected function createTransport(string $uri, string $id): Transport
+    {
+        return new TransportMock($uri, $id);
     }
 }

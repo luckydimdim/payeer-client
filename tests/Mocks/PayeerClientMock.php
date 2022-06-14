@@ -10,6 +10,16 @@ use Payeer\Service;
  */
 class PayeerClientMock extends PayeerClient
 {
+    public function setFake(string $json): void
+    {
+        $fake = [];
+        if ($json) {
+            $fake = json_decode($json, true);
+        }
+
+        $this->service->getTransport()->fake = $fake;
+    }
+
     protected function createService(string $uri, string $id): Service
     {
         return new ServiceMock($uri, $id);

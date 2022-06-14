@@ -22,7 +22,7 @@ class Service implements IService
     /**
      * @var ITransport payeer endpoint interaction object
      */
-    private readonly ITransport $transport;
+    protected readonly ITransport $transport;
 
     public function __construct(string $uri, string $id)
     {

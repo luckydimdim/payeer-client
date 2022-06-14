@@ -13,8 +13,9 @@ class CreateRequest extends RatesRequest
 {
     public string $type = '';
     public string $action = '';
-    public string $amount = '';
-    public string $price = '';
+    public ?float $amount = null;
+    public ?float $value = null;
+    public ?float $stop_price = null;
 
     /**
      * @param array<Currency, Currency> $currencyPairs
@@ -22,6 +23,7 @@ class CreateRequest extends RatesRequest
      * @param Action $action
      * @param float $amount
      * @param float $price
+     * @param float|null $stopPrice
      * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
      */
     public function __construct(
@@ -29,7 +31,8 @@ class CreateRequest extends RatesRequest
         Type $type,
         Action $action,
         float $amount,
-        float $price
+        float $price,
+        ?float $stopPrice
     ) {
         parent::__construct($currencyPairs);
 
@@ -37,7 +40,11 @@ class CreateRequest extends RatesRequest
 
         $this->type = $type->value;
         $this->action = $action->value;
+
+        // TODO: handle allowed params combinations for market type orders
         $this->amount = $amount;
-        $this->price = $price;
+        $this->value = $price;
+
+        $this->stop_price = $stopPrice;
     }
 }

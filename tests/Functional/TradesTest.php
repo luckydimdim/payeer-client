@@ -1,19 +1,13 @@
 <?php
 
-use Payeer\Enums\Action;
+namespace Payeer\Tests\Functional;
+
 use Payeer\Enums\Currency;
-use Payeer\Tests\Mocks\ServiceMock;
+use Payeer\Tests\Mocks\PayeerClientMock;
 
-beforeEach(function () {
-    $this->service = new ServiceMock(uri: 'dummy', id: 'dummy');
-});
-
-afterEach(function () {
-    $this->service = null;
-});
-
-it('TradesResponse maps properly', function () {
-    $serviceResponse = '{
+test('POST trades works properly', function () {
+    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
+    $client->setFake('{
   "success": true,
   "pairs": {
     "BTC_USD": [
@@ -53,15 +47,14 @@ it('TradesResponse maps properly', function () {
       }
     ]
   }
-}';
-    $serviceResponse = json_decode($serviceResponse, true);
+}');
+    $result = $client->trades([
+        [Currency::Btc, Currency::Usd],
+        [Currency::Btc, Currency::Rub]
+    ]);
 
-    $model = $this->service->getResponse('trades', $serviceResponse);
+    expect($result->data[0]->trades[1]->id)->toEqual(14162734);
+    expect($result->data[1]->trades[0]->date)->toEqual(1644327611);
+})->group('functional');
 
-    expect($model->success)->toBeTrue();
-    expect($model->data)->toHaveCount(2);
-    expect($model->data[0]->currencyPair[1])->toEqual(Currency::Usd);
-    expect($model->data[1]->trades[0]->id)->toEqual(14162750);
-    expect($model->data[1]->trades[0]->type)->toEqual(Action::Buy);
-    expect($model->data[1]->trades[1]->date)->toEqual(1644327610);
-})->group('responses');
+

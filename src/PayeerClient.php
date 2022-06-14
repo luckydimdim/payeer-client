@@ -2,11 +2,14 @@
 
 namespace Payeer;
 
+use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
+use Payeer\Exceptions\Client\ClientException;
 use Payeer\Exceptions\Client\IsOkException;
 use Payeer\Exceptions\Service\ServiceException;
 use Payeer\Responses\BalanceResponse;
 use Payeer\Responses\IsOkResponse;
+use Payeer\Responses\MyTradesResponse;
 use Payeer\Responses\OrdersResponse;
 use Payeer\Responses\RatesResponse;
 use Payeer\Responses\StatsResponse;
@@ -23,12 +26,12 @@ class PayeerClient
     /**
      * @var IService API services
      */
-    private readonly IService $service;
+    protected readonly IService $service;
 
     /**
      * @var PayeerOrderClient order operations facade
      */
-    private readonly PayeerOrderClient $order;
+    public readonly PayeerOrderClient $order;
 
     public function __construct(string $uri, string $id)
     {
@@ -54,51 +57,107 @@ class PayeerClient
      * Limits and currency pair rates request
      * @param array<array<Currency, Currency>> $currencyPairs
      * @return RatesResponse
+     * @throws ClientException
      */
-    public function rates(array $currencyPairs): RatesResponse
+    public function rates(array $currencyPairs = []): RatesResponse
     {
-        // TODO: implement corresponding client exceptions
-        return $this->service->rates($currencyPairs);
+        try {
+            return $this->service->rates($currencyPairs);
+        } catch (ServiceException $ex) {
+            // TODO: implement corresponding client exceptions
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
      * Prices change stats for the last 24 hours
      * @param array<array<Currency, Currency>> $currencyPairs
      * @return StatsResponse
+     * @throws ClientException
      */
     public function stats(array $currencyPairs): StatsResponse
     {
-        return $this->service->stats($currencyPairs);
+        try {
+            return $this->service->stats($currencyPairs);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
      * Prices change stats for the last 24 hours
      * @param array<array<Currency, Currency>> $currencyPairs
      * @return OrdersResponse
+     * @throws ClientException
      */
     public function orders(array $currencyPairs): OrdersResponse
     {
-        return $this->service->orders($currencyPairs);
+        try {
+            return $this->service->orders($currencyPairs);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
      * Trades history
      * @param array<array<Currency, Currency>> $currencyPairs
      * @return TradesResponse
+     * @throws ClientException
      */
     public function trades(array $currencyPairs): TradesResponse
     {
-        return $this->service->trades($currencyPairs);
+        try {
+            return $this->service->trades($currencyPairs);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
+    }
+
+    /**
+     * My trades history
+     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param Action $action
+     * @param int|null $dateFrom
+     * @param int|null $dateTo
+     * @param int|null $lastOrderId
+     * @param int|null $pageSize
+     * @return MyTradesResponse
+     * @throws ClientException
+     */
+    public function myTrades(
+        array $currencyPairs = [],
+        Action $action = Action::None,
+        ?int $dateFrom = null,
+        ?int $dateTo = null,
+        ?int $lastOrderId = null,
+        ?int $pageSize = null): MyTradesResponse
+    {
+        try {
+            return $this->service->myTrades(
+                $currencyPairs,
+                $action,
+                $dateFrom,
+                $dateTo,
+                $lastOrderId,
+                $pageSize);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
      * User's balance
-     * @param array<array<Currency, Currency>> $currencyPairs
      * @return BalanceResponse
+     * @throws ClientException
      */
-    public function balance(array $currencyPairs): BalanceResponse
+    public function balance(): BalanceResponse
     {
-        return $this->service->balance($currencyPairs);
+        try {
+            return $this->service->balance();
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
@@ -106,9 +165,14 @@ class PayeerClient
      * @param string $uri
      * @param string $id
      * @return Service
+     * @throws ClientException
      */
     protected function createService(string $uri, string $id): Service
     {
-        return new Service($uri, $id);
+        try {
+            return new Service($uri, $id);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 }

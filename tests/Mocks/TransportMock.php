@@ -11,6 +11,8 @@ use Payeer\Transport;
  */
 class TransportMock extends Transport
 {
+    public array $fake = [];
+
     public function send(RequestBase $request): array
     {
         // Set request send time label
@@ -30,7 +32,7 @@ class TransportMock extends Transport
             ]
         );
 
-        return [];
+        return $this->fake;
     }
 
     protected function createClient(string $uri, string $id): Client

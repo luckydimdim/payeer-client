@@ -6,6 +6,8 @@ use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
+use Payeer\Exceptions\Client\ClientException;
+use Payeer\Exceptions\Service\ServiceException;
 use Payeer\Responses\CancelResponse;
 use Payeer\Responses\CreateResponse;
 use Payeer\Responses\ListResponse;
@@ -24,26 +26,37 @@ class PayeerOrderClient
 
     /**
      * User's orders list
+     * @param Status $status
      * @param array<array<Currency, Currency>> $currencyPairs
+     * @param Action $action
+     * @param int|null $dateFrom
+     * @param int|null $dateTo
+     * @param int|null $lastOrderId
+     * @param int|null $pageSize
      * @return ListResponse
+     * @throws ClientException
      */
     public function list(
-        Status $status,
-        array $currencyPairs,
-        Action $action,
-        int $dateFrom = 0,
-        int $dateTo = 0,
-        int $lastOrderId = 0,
-        int $pageSize = 0
+        Status $status = Status::None,
+        array $currencyPairs = [],
+        Action $action = Action::None,
+        ?int $dateFrom = null,
+        ?int $dateTo = null,
+        ?int $lastOrderId = null,
+        ?int $pageSize = null
     ): ListResponse {
-        return $this->service->list(
-            $status,
-            $currencyPairs,
-            $action,
-            $dateFrom,
-            $dateTo,
-            $lastOrderId,
-            $pageSize);
+        try {
+            return $this->service->list(
+                $status,
+                $currencyPairs,
+                $action,
+                $dateFrom,
+                $dateTo,
+                $lastOrderId,
+                $pageSize);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
@@ -52,23 +65,33 @@ class PayeerOrderClient
      * @param array<array<Currency, Currency>> $currencyPairs
      * @param Action $action
      * @return CancelResponse
+     * @throws ClientException
      */
     public function cancel(
         ?int $id = null,
         array $currencyPairs = [],
         Action $action = Action::None): CancelResponse
     {
-        return $this->service->cancel($id, $currencyPairs, $action);
+        try {
+            return $this->service->cancel($id, $currencyPairs, $action);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
      * Cancels orders by criteria or all of them
      * @param int $id
      * @return StatusResponse
+     * @throws ClientException
      */
     public function status(int $id): StatusResponse
     {
-        return $this->service->status($id);
+        try {
+            return $this->service->status($id);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 
     /**
@@ -79,15 +102,21 @@ class PayeerOrderClient
      * @param float $amount
      * @param float $price
      * @return CreateResponse
+     * @throws ClientException
      */
     public function create(
         array $currencyPairs,
         Type $type,
         Action $action,
         float $amount,
-        float $price
+        float $price,
+        ?float $stopPrice = null
     ): CreateResponse {
-        return $this->service->create(
-            $currencyPairs, $type, $action, $amount, $price);
+        try {
+            return $this->service->create(
+                $currencyPairs, $type, $action, $amount, $price, $stopPrice);
+        } catch (ServiceException $ex) {
+            throw new ClientException($ex->getMessage());
+        }
     }
 }

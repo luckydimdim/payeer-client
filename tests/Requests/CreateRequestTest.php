@@ -23,7 +23,8 @@ test('CreateRequest accepts proper POST params from service layer', function () 
         Type::Limit,
         Action::Buy,
         3,
-        50
+        50,
+        0
     ]);
 
     $this->transport->send($request);
