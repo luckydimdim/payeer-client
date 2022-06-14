@@ -2,6 +2,9 @@
 
 namespace Payeer\Requests;
 
+use Payeer\Exceptions\Service\RequestCreationException;
+use Payeer\Exceptions\Service\RequestNotFoundException;
+
 /**
  * Crates instances of Request models
  */
@@ -26,8 +29,7 @@ class RequestFactory
         try {
             $class = new $className(...$args);
         } catch (\Spatie\DataTransferObject\Exceptions\UnknownProperties $ex) {
-            // TODO: replace with corresponding user exception
-            throw new \Exception("Couldn't parse input parameters... ". $ex->getMessage());
+            throw new RequestCreationException($ex);
         }
 
         return $class;
@@ -47,8 +49,7 @@ class RequestFactory
         $className = '\Payeer\Requests\\' . $method . 'Request';
 
         if (!class_exists($className)) {
-            // TODO: specify Exception
-            throw new \Exception('Requested service not found.');
+            throw new RequestNotFoundException();
         }
 
         return $className;

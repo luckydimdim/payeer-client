@@ -2,6 +2,9 @@
 
 namespace Payeer\Responses;
 
+use Payeer\Exceptions\Service\ResponseCreationException;
+use Payeer\Exceptions\Service\ResponseNotFoundException;
+
 /**
  * Crates instances of Response models
  */
@@ -23,8 +26,7 @@ class ResponseFactory
         try {
             $instance = new $className($response);
         } catch (\Exception $ex) {
-            // TODO: specify mapping Exception (trigger a user one here)
-            throw new \Exception("Couldn't parse API response... ". $ex->getMessage());
+            throw new ResponseCreationException();
         }
 
         return $instance;
@@ -44,8 +46,7 @@ class ResponseFactory
         $className = '\Payeer\Responses\\' . $method . 'Response';
 
         if (!class_exists($className)) {
-            // TODO: specify Exception
-            throw new \Exception("No handler found for API response $method.");
+            throw new ResponseNotFoundException();
         }
 
         return $className;

@@ -2,6 +2,9 @@
 
 namespace Payeer;
 
+use Payeer\Exceptions\Service\ApiErrorException;
+use Payeer\Exceptions\Service\ServiceException;
+use Payeer\Exceptions\Transport\TransportException;
 use Payeer\Requests\RequestBase;
 use Payeer\Requests\RequestFactory;
 use Payeer\Responses\ResponseBase;
@@ -41,9 +44,8 @@ class Service implements IService
 
         try {
             $result = $this->transport->send($request);
-        } catch (\Exception $ex) {
-            // TODO: handle Transport layer exceptions and convert them to user level ones
-            throw new \Exception('User exception... '. $ex->getMessage());
+        } catch (TransportException $ex) {
+            throw new ApiErrorException($ex->getMessage());
         }
 
         $response = $this->getResponse($method, $result);
@@ -64,9 +66,8 @@ class Service implements IService
         try {
             // Instantiates a proper Request class
             $request = RequestFactory::create($method, $args);
-        } catch (\Exception $ex) {
-            // TODO: handle Service layer exceptions and convert them to user level ones
-            throw new \Exception('User exception... '. $ex->getMessage());
+        } catch (ServiceException $ex) {
+            throw $ex;
         }
 
         return $request;
@@ -85,9 +86,8 @@ class Service implements IService
             // Instantiates a proper Response class
             // Auto maps properties
             $response = ResponseFactory::create($method, $result);
-        } catch (\Exception $ex) {
-            // TODO: handle Transport layer user exceptions and convert them to user level ones
-            throw new \Exception('User exception... '. $ex->getMessage());
+        } catch (ServiceException $ex) {
+            throw $ex;
         }
 
         return $response;

@@ -4,6 +4,8 @@ namespace Payeer;
 
 use GuzzleHttp\Client;
 use Payeer\Enums\HttpMethod;
+use Payeer\Exceptions\Transport\SendRequestException;
+use Payeer\Exceptions\Transport\TransportException;
 use Payeer\Requests\RequestBase;
 
 /**
@@ -30,6 +32,8 @@ class Transport implements ITransport
      * Sends a request to Payeer API and receives a response
      * @param RequestBase $request
      * @return array
+     * @throws SendRequestException
+     * @throws TransportException
      */
     public function send(RequestBase $request): array
     {
@@ -51,9 +55,9 @@ class Transport implements ITransport
                     'headers' => ['API-SIGN' => $sign]
                 ]);
         } catch (\GuzzleHttp\Exception\GuzzleException $ex) {
-            // TODO: handle exception
+            throw new SendRequestException();
         } catch (\Exception $ex) {
-            // TODO: handle other network related exceptions
+            throw new TransportException();
         }
 
         // TODO: handle transformation exceptions

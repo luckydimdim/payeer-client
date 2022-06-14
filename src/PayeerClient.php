@@ -3,6 +3,8 @@
 namespace Payeer;
 
 use Payeer\Enums\Currency;
+use Payeer\Exceptions\Client\IsOkException;
+use Payeer\Exceptions\Service\ServiceException;
 use Payeer\Responses\BalanceResponse;
 use Payeer\Responses\IsOkResponse;
 use Payeer\Responses\OrdersResponse;
@@ -37,10 +39,15 @@ class PayeerClient
     /**
      * Checks API availability
      * @return IsOkResponse
+     * @throws IsOkException
      */
     public function isOk(): IsOkResponse
     {
-        return $this->service->isOk();
+        try {
+            return $this->service->isOk();
+        } catch (ServiceException $ex) {
+            throw new IsOkException($ex->getMessage());
+        }
     }
 
     /**
@@ -50,6 +57,7 @@ class PayeerClient
      */
     public function rates(array $currencyPairs): RatesResponse
     {
+        // TODO: implement corresponding client exceptions
         return $this->service->rates($currencyPairs);
     }
 

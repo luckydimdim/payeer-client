@@ -2,6 +2,23 @@
 
 namespace Payeer\Responses;
 
+use Payeer\Exceptions\Api\AccessDeniedException;
+use Payeer\Exceptions\Api\ApiException;
+use Payeer\Exceptions\Api\IncorrectPriceException;
+use Payeer\Exceptions\Api\InsufficientFundsException;
+use Payeer\Exceptions\Api\InsufficientVolumeException;
+use Payeer\Exceptions\Api\InvalidDateRangeException;
+use Payeer\Exceptions\Api\InvalidIpAddressException;
+use Payeer\Exceptions\Api\InvalidParameterException;
+use Payeer\Exceptions\Api\InvalidSignatureException;
+use Payeer\Exceptions\Api\InvalidStatusForRefundException;
+use Payeer\Exceptions\Api\InvalidTimestampException;
+use Payeer\Exceptions\Api\LimitExceededException;
+use Payeer\Exceptions\Api\MinAmountException;
+use Payeer\Exceptions\Api\MinValueException;
+use Payeer\Exceptions\Api\ParameterEmptyException;
+use Payeer\Exceptions\Api\RefundLimitException;
+use Payeer\Exceptions\Api\UnknownErrorException;
 use Spatie\DataTransferObject\Attributes\MapFrom;
 use Spatie\DataTransferObject\DataTransferObject;
 
@@ -30,63 +47,24 @@ abstract class ResponseBase extends DataTransferObject
             return;
         }
 
-        // TODO: introduce service layer exception type
-        switch ($this->errorCode) {
-            case 'INVALID_SIGNATURE':
-                $message = "Возможные причины:
-- неверная подпись API-SIGN
-- неверно указан API-ID
-- API-пользователь заблокирован (можно разблокировать в настройках)";
-                throw new \Exception($message);
-            case 'INVALID_IP_ADDRESS':
-                $message = "IP-адрес ip источника запроса не совпадает с тем, который прописан в настройках API";
-                throw new \Exception($message);
-            case 'LIMIT_EXCEEDED':
-                $message = "Превышение установленных лимитов (количество запросов/весов/ордеров), подробнее указано в параметре desc";
-                throw new \Exception($message);
-            case 'INVALID_TIMESTAMP':
-                $message = "Параметр ts указан неверно:
-- запрос шел до сервера API более 60 секунд
-- на вашем сервере неверное время, настройте синхронизацию";
-                throw new \Exception($message);
-            case 'ACCESS_DENIED':
-                $message = "Доступ к API/ордеру запрещен. Проверьте ID заказа";
-                throw new \Exception($message);
-            case 'INVALID_PARAMETER':
-                $message = "Параметр parameter указан неверно";
-                throw new \Exception($message);
-            case 'PARAMETER_EMPTY':
-                $message = "Параметр parameter обязателен (не должен быть пустым)";
-                throw new \Exception($message);
-            case 'INVALID_STATUS_FOR_REFUND':
-                $message = "Статус status ордера не позволяет произвести возврат (ордер уже возвращен или отменен)";
-                throw new \Exception($message);
-            case 'REFUND_LIMIT':
-                $message = "Ордер может быть отменен не менее через 1 минуту после создания";
-                throw new \Exception($message);
-            case 'UNKNOWN_ERROR':
-                $message = "Неизвестная ошибка на бирже. Торги приостановлены для проверки. Попробуйте через 15 минут.";
-                throw new \Exception($message);
-            case 'INVALID_DATE_RANGE':
-                $message = "Неверно указан диапазон дат для фильтрации (период не должен превышать 32 дня)";
-                throw new \Exception($message);
-            case 'INSUFFICIENT_FUNDS':
-                $message = "Недостаточно средств для создания ордера (maxAmount, maxValue)";
-                throw new \Exception($message);
-            case 'INSUFFICIENT_VOLUME':
-                $message = "Недостаточно объема для создания ордера (maxAmount, maxValue)";
-                throw new \Exception($message);
-            case 'INCORRECT_PRICE':
-                $message = "Цена выходит из допустимого диапазона (minPrice, maxPrice)";
-                throw new \Exception($message);
-            case 'MIN_AMOUNT':
-                $message = "Количество меньше минимального minAmount для выбранной пары";
-                throw new \Exception($message);
-            case 'MIN_VALUE':
-                $message = "Сумма ордера меньше минимальной minValue для выбранной пары";
-                throw new \Exception($message);
-            default:
-                throw new \Exception('General service layer exception');
-        }
+        throw match ($this->errorCode) {
+            'INVALID_SIGNATURE' => new InvalidSignatureException(),
+            'INVALID_IP_ADDRESS' => new InvalidIpAddressException(),
+            'LIMIT_EXCEEDED' => new LimitExceededException(),
+            'INVALID_TIMESTAMP' => new InvalidTimestampException(),
+            'ACCESS_DENIED' => new AccessDeniedException(),
+            'INVALID_PARAMETER' => new InvalidParameterException(),
+            'PARAMETER_EMPTY' => new ParameterEmptyException(),
+            'INVALID_STATUS_FOR_REFUND' => new InvalidStatusForRefundException(),
+            'REFUND_LIMIT' => new RefundLimitException(),
+            'UNKNOWN_ERROR' => new UnknownErrorException(),
+            'INVALID_DATE_RANGE' => new InvalidDateRangeException(),
+            'INSUFFICIENT_FUNDS' => new InsufficientFundsException(),
+            'INSUFFICIENT_VOLUME' => new InsufficientVolumeException(),
+            'INCORRECT_PRICE' => new IncorrectPriceException(),
+            'MIN_AMOUNT' => new MinAmountException(),
+            'MIN_VALUE' => new MinValueException(),
+            default => new ApiException(),
+        };
     }
 }
