@@ -17,9 +17,9 @@ class Service implements IService
      */
     private readonly ITransport $transport;
 
-    public function __construct(string $uri, string $id, string $sign)
+    public function __construct(string $uri, string $id)
     {
-        $this->transport = $this->createTransport($uri, $id, $sign);
+        $this->transport = $this->createTransport($uri, $id);
     }
 
     /**
@@ -34,8 +34,16 @@ class Service implements IService
     public function __call(string $method, array $args): ResponseBase
     {
         $request = $this->getRequest($method, ...$args);
-        $result = $this->transport->send($request);
+
+        try {
+            $result = $this->transport->send($request);
+        } catch (\Exception $ex) {
+            // TODO: handle Transport layer exceptions and convert them to user level ones
+            throw new \Exception('User exception... '. $ex->getMessage());
+        }
+
         $response = $this->getResponse($method, $result);
+        $response->handleApiErrors();
 
         return $response;
     }
@@ -53,7 +61,7 @@ class Service implements IService
             // Instantiates a proper Request class
             $request = RequestFactory::create($method, $args);
         } catch (\Exception $ex) {
-            // TODO: handle Service layer exceptions and convert them to user level one
+            // TODO: handle Service layer exceptions and convert them to user level ones
             throw new \Exception('User exception... '. $ex->getMessage());
         }
 
@@ -74,7 +82,7 @@ class Service implements IService
             // Auto maps properties
             $response = ResponseFactory::create($method, $result);
         } catch (\Exception $ex) {
-            // TODO: handle Transport layer exceptions and convert them to user level one
+            // TODO: handle Transport layer user exceptions and convert them to user level ones
             throw new \Exception('User exception...');
         }
 
@@ -86,11 +94,10 @@ class Service implements IService
      * Instantiates Transport object.
      * @param string $uri
      * @param string $id
-     * @param string $sign
      * @return Transport
      */
-    protected function createTransport(string $uri, string $id, string $sign): Transport
+    protected function createTransport(string $uri, string $id): Transport
     {
-        return new Transport($uri, $id, $sign);
+        return new Transport($uri, $id);
     }
 }

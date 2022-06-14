@@ -12,9 +12,9 @@ use Payeer\Transport;
  */
 class ServiceMock extends Service
 {
-    protected function createTransport(string $uri, string $id, string $sign): Transport
+    protected function createTransport(string $uri, string $id): Transport
     {
-        return new TransportMock($uri, $id, $sign);
+        return new TransportMock($uri, $id);
     }
 
     public function getRequest(string $method, array $args): RequestBase

@@ -21,10 +21,10 @@ class PayeerClient
      */
     private readonly PayeerOrderClient $order;
 
-    public function __construct(string $uri, string $id, string $sign)
+    public function __construct(string $uri, string $id)
     {
-        $this->service = $this->createService($uri, $id, $sign);
-        $this->order = new PayeerOrderClient($uri, $id, $sign, $this->service);
+        $this->service = $this->createService($uri, $id);
+        $this->order = new PayeerOrderClient($uri, $id, $this->service);
     }
 
     /**
@@ -50,11 +50,10 @@ class PayeerClient
      * Creates IService instance. Needed for testing purposes.
      * @param string $uri
      * @param string $id
-     * @param string $sign
      * @return Service
      */
-    protected function createService(string $uri, string $id, string $sign): Service
+    protected function createService(string $uri, string $id): Service
     {
-        return new Service($uri, $id, $sign);
+        return new Service($uri, $id);
     }
 }

@@ -10,8 +10,8 @@ use Payeer\Service;
  */
 class PayeerClientMock extends PayeerClient
 {
-    protected function createService(string $uri, string $id, string $sign): Service
+    protected function createService(string $uri, string $id): Service
     {
-        return new ServiceMock($uri, $id, $sign);
+        return new ServiceMock($uri, $id);
     }
 }

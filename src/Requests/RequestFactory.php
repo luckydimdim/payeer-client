@@ -9,27 +9,41 @@ class RequestFactory
 {
     /**
      * Looks for a corresponding Request class and instantiates it
-     * @param $method
+     * @param string $method
      * @param $args
      * @return RequestBase
      * @throws \Exception
      */
-    public static function create($method, $args): RequestBase
+    public static function create(string $method, $args): RequestBase
     {
         // TODO: validate $method param
 
         // Normalize
         $method = ucfirst($method);
 
+        $className = self::getClassName($method);
+
+        return new $className($args);
+    }
+
+    /**
+     * Looks for a corresponding Request class
+     * @param string $method
+     * @return string
+     * @throws \Exception
+     */
+    public static function getClassName(string $method): string
+    {
+        // Normalize
+        $method = ucfirst($method);
+
         $className = '\Payeer\Requests\\' . $method . 'Request';
 
-        print_r($className);
-
-        if (class_exists($className)) {
-            return new $className($args);
+        if (!class_exists($className)) {
+            // TODO: specify Exception
+            throw new \Exception('Requested service not found.');
         }
 
-        // TODO: specify Exception
-        throw new \Exception("Requested service $method not found.");
+        return $className;
     }
 }

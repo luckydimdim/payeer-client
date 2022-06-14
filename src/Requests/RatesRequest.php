@@ -18,9 +18,17 @@ class RatesRequest extends RequestBase
      */
     public function __construct(array $currencyPairs = [])
     {
-        parent::__construct(HttpMethod::Get, '/trade/info');
+        parent::__construct();
 
         $this->pair = $this->getPairs($currencyPairs);
+
+        if (!$this->pair) {
+            $this->setMethod(HttpMethod::Get);
+        } else {
+            $this->setMethod(HttpMethod::Post);
+        }
+
+        $this->setUri('/trade/info');
     }
 
     /**

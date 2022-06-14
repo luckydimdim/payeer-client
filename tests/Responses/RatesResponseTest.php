@@ -4,14 +4,14 @@ use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\ServiceMock;
 
 beforeEach(function () {
-    $this->service = new ServiceMock(uri: 'dummy', id: 'dummy', sign: 'dummy');
+    $this->service = new ServiceMock(uri: 'dummy', id: 'dummy');
 });
 
 afterEach(function () {
     $this->service = null;
 });
 
-it('maps basic response properly', function () {
+it('maps all rates response properly', function () {
     $serviceResponse = '{
   "success": true,
   "limits": {

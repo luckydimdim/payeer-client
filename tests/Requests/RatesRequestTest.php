@@ -27,3 +27,16 @@ test('getPairs parses multiple pairs correctly', function () {
         [Currency::Btc, Currency::Rub]
     ]))->toEqual('BTC_USD,BTC_RUB');
 })->group('requests');
+
+test('validateParams handles incorrect number of elements in a pair', function () {
+    $this->request->validateParams([Currency::Btc]);
+})->throws('Incorrect parameters format.')->group('requests');
+
+test('validateParams handles incorrect type of pair elements', function () {
+    $this->request->validateParams([Currency::Btc, 'USD']);
+})->throws('Incorrect parameters type.')->group('requests');
+
+test('validateParams handles incorrect pair elements combinations', function () {
+    $this->request->validateParams([Currency::Btc, Currency::Btc]);
+})->throws('Incorrect parameters combination.')->group('requests');
+

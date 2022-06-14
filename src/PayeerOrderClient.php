@@ -10,11 +10,8 @@ class PayeerOrderClient
     public function __construct(
         string $uri,
         string $id,
-        string $sign,
         private readonly IService $service
-    ) {
-
-    }
+    ) { }
 
     /**
      * Fetches order data by ID

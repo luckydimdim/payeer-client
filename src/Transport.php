@@ -3,6 +3,7 @@
 namespace Payeer;
 
 use GuzzleHttp\Client;
+use Payeer\Enums\HttpMethod;
 use Payeer\Requests\RequestBase;
 
 /**
@@ -17,9 +18,9 @@ class Transport implements ITransport
      */
     protected Client $client;
 
-    public function __construct(string $uri, string $id, string $sign)
+    public function __construct(string $uri, protected readonly string $id)
     {
-        $this->client = $this->createClient($uri, $id, $sign);
+        $this->client = $this->createClient($uri, $this->id);
     }
 
     /**
@@ -29,12 +30,22 @@ class Transport implements ITransport
      */
     public function send(RequestBase $request): array
     {
+        // Set request send time
+        $request->setTime();
+
+        // Get request signature
+        $requestMethod = $request->getMethod();
+        $requestParams = $request->toArray();
+        $sign = $this->getSign($requestMethod, $requestParams, $this->id);
+
         try {
             $response = $this->client->request(
-                $request->getMethod()->value,
+                $requestMethod->value,
                 $request->getUri(),
                 [
-                    'json' => $request->toArray()
+                    'json' => $requestParams,
+                    // TODO: test that sign is correct
+                    'headers' => ['API-SIGN' => $sign]
                 ]);
         } catch (\GuzzleHttp\Exception\GuzzleException $ex) {
             // TODO: handle exception
@@ -52,18 +63,33 @@ class Transport implements ITransport
      * Instantiates HTTP Client object. Function required for testing.
      * @param string $uri
      * @param string $id
-     * @param string $sign
      * @return Client
      */
-    protected function createClient(string $uri, string $id, string $sign): Client
+    protected function createClient(string $uri, string $id): Client
     {
         return new Client([
             'base_uri' => $uri,
             'headers' => [
                 'Accept' => 'application/json; charset=utf-8',
-                'API-ID' => $id,
-                'API-SIGN' => $sign
+                'API-ID' => $id
             ]
         ]);
+    }
+
+    /**
+     * Signs request with API KEY
+     * @param HttpMethod $method
+     * @param array $request
+     * @param string $apiSecret
+     * @return string
+     * TODO: test this method
+     */
+    protected function getSign(
+        HttpMethod $method, array $request, string $apiSecret
+    ): string {
+        return hash_hmac(
+            'sha256',
+            $method->value . json_encode($request),
+            $apiSecret);
     }
 }
