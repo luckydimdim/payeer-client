@@ -3,13 +3,16 @@
 namespace Payeer\Responses\Mappers;
 
 use Payeer\Enums\Currency;
-use Payeer\Responses\Models\Pair;
+use Payeer\Responses\Models\Rate;
 use Spatie\DataTransferObject\Caster;
 
-class PairsMapper implements Caster
+/**
+ * Mapper of Rates API method response to the domain model
+ */
+class RatesPairsMapper implements Caster
 {
     /**
-     * Maps RatesResponse Pairs property
+     * Maps RatesResponse pairs property
      * @param array|mixed $value
      * @return mixed
      */
@@ -18,7 +21,7 @@ class PairsMapper implements Caster
         $result = [];
 
         foreach ($value as $currencies => $pair) {
-            $model = new Pair();
+            $model = new Rate();
 
             $parts = explode('_', $currencies);
 
@@ -36,7 +39,4 @@ class PairsMapper implements Caster
 
         return $result;
     }
-}
-{
-
 }

@@ -10,11 +10,11 @@ class RequestFactory
     /**
      * Looks for a corresponding Request class and instantiates it
      * @param string $method
-     * @param $args
+     * @param array $args
      * @return RequestBase
      * @throws \Exception
      */
-    public static function create(string $method, $args): RequestBase
+    public static function create(string $method, array $args): RequestBase
     {
         // TODO: validate $method param
 
@@ -23,7 +23,14 @@ class RequestFactory
 
         $className = self::getClassName($method);
 
-        return new $className($args);
+        try {
+            $class = new $className(...$args);
+        } catch (\Spatie\DataTransferObject\Exceptions\UnknownProperties $ex) {
+            // TODO: replace with corresponding user exception
+            throw new \Exception("Couldn't parse input parameters... ". $ex->getMessage());
+        }
+
+        return $class;
     }
 
     /**

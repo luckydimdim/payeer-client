@@ -2,7 +2,10 @@
 
 namespace Payeer\Responses\Models;
 
-class Pair
+/**
+ * Rates response model element
+ */
+class Rate
 {
     public array $currencyPair;
     public int $pricePrecision;

@@ -15,7 +15,7 @@ afterEach(function () {
 
 it('instantiates proper request model', function () {
     $result = $this->service->getRequest('rates', [
-        [Currency::Btc, Currency::Usd]
+        [[Currency::Btc, Currency::Usd]]
     ]);
     expect($result)->toBeInstanceOf(RatesRequest::class);
 })->group('service');

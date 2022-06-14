@@ -7,5 +7,5 @@ namespace Payeer\Responses;
  */
 class IsOkResponse extends ResponseBase
 {
-
+    public int $time = 0;
 }

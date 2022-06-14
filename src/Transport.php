@@ -8,8 +8,11 @@ use Payeer\Requests\RequestBase;
 
 /**
  * Payeer endpoint interaction class.
- * Converts Request objects to JSON, executes JSON requests against Payeer API,
- * returns responses in array format, handles transport level errors.
+ * Converts request models to JSON.
+ * Signs requests with timestamp and hash.
+ * Executes JSON requests against Payeer API.
+ * Returns responses in array format.
+ * Handles transport layer errors.
  */
 class Transport implements ITransport
 {

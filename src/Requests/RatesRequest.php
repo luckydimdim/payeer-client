@@ -57,7 +57,6 @@ class RatesRequest extends RequestBase
      * @param array<Currency, Currency> $currencyPair
      * @return bool
      * @throws \Exception TODO: introduce own exception types
-     * TODO: test this method
      */
     public function validateParams(array $currencyPair): bool
     {

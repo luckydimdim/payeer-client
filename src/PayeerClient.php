@@ -3,11 +3,18 @@
 namespace Payeer;
 
 use Payeer\Enums\Currency;
+use Payeer\Responses\BalanceResponse;
 use Payeer\Responses\IsOkResponse;
+use Payeer\Responses\OrdersResponse;
 use Payeer\Responses\RatesResponse;
+use Payeer\Responses\StatsResponse;
+use Payeer\Responses\TradesResponse;
 
 /**
- * API operations facade
+ * API operations facade.
+ * Accept calls to API methods.
+ * Returns response models or throws exceptions
+ * in case of incorrect input parameters or API faults.
  */
 class PayeerClient
 {
@@ -28,7 +35,7 @@ class PayeerClient
     }
 
     /**
-     * Checks API health
+     * Checks API availability
      * @return IsOkResponse
      */
     public function isOk(): IsOkResponse
@@ -44,6 +51,46 @@ class PayeerClient
     public function rates(array $currencyPairs): RatesResponse
     {
         return $this->service->rates($currencyPairs);
+    }
+
+    /**
+     * Prices change stats for the last 24 hours
+     * @param array<array<Currency, Currency>> $currencyPairs
+     * @return StatsResponse
+     */
+    public function stats(array $currencyPairs): StatsResponse
+    {
+        return $this->service->stats($currencyPairs);
+    }
+
+    /**
+     * Prices change stats for the last 24 hours
+     * @param array<array<Currency, Currency>> $currencyPairs
+     * @return OrdersResponse
+     */
+    public function orders(array $currencyPairs): OrdersResponse
+    {
+        return $this->service->orders($currencyPairs);
+    }
+
+    /**
+     * Trades history
+     * @param array<array<Currency, Currency>> $currencyPairs
+     * @return TradesResponse
+     */
+    public function trades(array $currencyPairs): TradesResponse
+    {
+        return $this->service->trades($currencyPairs);
+    }
+
+    /**
+     * User's balance
+     * @param array<array<Currency, Currency>> $currencyPairs
+     * @return BalanceResponse
+     */
+    public function balance(array $currencyPairs): BalanceResponse
+    {
+        return $this->service->balance($currencyPairs);
     }
 
     /**

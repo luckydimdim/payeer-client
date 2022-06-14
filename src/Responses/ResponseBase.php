@@ -10,6 +10,9 @@ use Spatie\DataTransferObject\DataTransferObject;
  */
 abstract class ResponseBase extends DataTransferObject
 {
+    /**
+     * @var bool a general result of the operation
+     */
     public bool $success = false;
 
     #[MapFrom('error.code')]
@@ -19,6 +22,7 @@ abstract class ResponseBase extends DataTransferObject
      * Checks if there is any API level errors and triggers Exceptions
      * @return void
      * @throws \Exception
+     * TODO: test this method
      */
     public function handleApiErrors(): void
     {

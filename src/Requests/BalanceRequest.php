@@ -5,9 +5,9 @@ namespace Payeer\Requests;
 use Payeer\Enums\HttpMethod;
 
 /**
- * Checks API connection
+ * User's balance
  */
-class IsOkRequest extends RequestBase
+class BalanceRequest extends RequestBase
 {
     /**
      * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
@@ -16,7 +16,7 @@ class IsOkRequest extends RequestBase
     {
         parent::__construct();
 
-        $this->setMethod(HttpMethod::Get);
-        $this->setUri('/trade/info');
+        $this->setMethod(HttpMethod::Post);
+        $this->setUri('/trade/account');
     }
 }

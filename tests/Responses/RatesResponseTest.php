@@ -11,7 +11,7 @@ afterEach(function () {
     $this->service = null;
 });
 
-it('maps all rates response properly', function () {
+it('RatesResponse maps properly', function () {
     $serviceResponse = '{
   "success": true,
   "limits": {
@@ -51,7 +51,7 @@ it('maps all rates response properly', function () {
     expect($model->success)->toBeTrue();
     expect($model->limits[0]->limit)->toEqual(600);
     expect($model->limits[0]->intervalNumber)->toEqual(1);
-    expect($model->pairs)->toHaveCount(2);
-    expect($model->pairs[0]->currencyPair[0])->toEqual(Currency::Btc);
-    expect($model->pairs[1]->maxPrice)->toEqual(6199117.08);
+    expect($model->data)->toHaveCount(2);
+    expect($model->data[0]->currencyPair[0])->toEqual(Currency::Btc);
+    expect($model->data[1]->maxPrice)->toEqual(6199117.08);
 })->group('responses');

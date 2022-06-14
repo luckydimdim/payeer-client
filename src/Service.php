@@ -8,7 +8,11 @@ use Payeer\Responses\ResponseBase;
 use Payeer\Responses\ResponseFactory;
 
 /**
- * API services operations
+ * API services operations.
+ * Instantiates and fills request models with user parameters
+ * and pass them to transport layer.
+ * Handles transport layer responses and maps them to corresponding response models.
+ * Calls API errors handler.
  */
 class Service implements IService
 {
@@ -33,7 +37,7 @@ class Service implements IService
      */
     public function __call(string $method, array $args): ResponseBase
     {
-        $request = $this->getRequest($method, ...$args);
+        $request = $this->getRequest($method, $args);
 
         try {
             $result = $this->transport->send($request);
@@ -83,7 +87,7 @@ class Service implements IService
             $response = ResponseFactory::create($method, $result);
         } catch (\Exception $ex) {
             // TODO: handle Transport layer user exceptions and convert them to user level ones
-            throw new \Exception('User exception...');
+            throw new \Exception('User exception... '. $ex->getMessage());
         }
 
         return $response;
