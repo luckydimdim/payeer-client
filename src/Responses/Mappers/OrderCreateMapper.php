@@ -5,7 +5,6 @@ namespace Payeer\Responses\Mappers;
 use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
 use Payeer\Enums\Type;
-use Payeer\Responses\Models\Ask;
 use Payeer\Responses\Models\CreatedOrder;
 use Spatie\DataTransferObject\Caster;
 

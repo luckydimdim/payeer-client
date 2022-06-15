@@ -7,7 +7,6 @@ use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Responses\Models\PayeerOrder;
-use Payeer\Responses\Models\PayeerTrade;
 use Spatie\DataTransferObject\Caster;
 
 /**

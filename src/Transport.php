@@ -23,9 +23,9 @@ class Transport implements ITransport
      */
     protected Client $client;
 
-    public function __construct(string $uri, protected readonly string $id)
+    public function __construct(string $id, protected readonly string $key, string $uri)
     {
-        $this->client = $this->createClient($uri, $this->id);
+        $this->client = $this->createClient($id, $uri);
     }
 
     /**
@@ -43,7 +43,7 @@ class Transport implements ITransport
         // Get request signature
         $requestMethod = $request->getMethod();
         $requestParams = $request->toArray();
-        $sign = $this->getSign($requestMethod, $requestParams, $this->id);
+        $sign = $this->getSign($requestMethod, $requestParams, $this->key);
 
         try {
             $response = $this->client->request(
@@ -68,11 +68,11 @@ class Transport implements ITransport
 
     /**
      * Instantiates HTTP Client object. Function required for testing.
-     * @param string $uri
      * @param string $id
+     * @param string $uri
      * @return Client
      */
-    protected function createClient(string $uri, string $id): Client
+    protected function createClient(string $id, string $uri): Client
     {
         return new Client([
             'base_uri' => $uri,

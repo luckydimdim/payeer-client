@@ -4,20 +4,25 @@ namespace Payeer\Tests\Functional;
 
 use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
-use Payeer\Enums\Status;
-use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
+beforeEach(function () {
+    $this->client = new PayeerClientMock('dummy_id', 'dummy_key');
+});
+
+afterEach(function () {
+    $this->client = null;
+});
+
 test('order cancel by pairs and action works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": [
     "36987301",
     "36987294"
   ]
 }');
-    $result = $client->order->cancel(
+    $result = $this->client->order->cancel(
         currencyPairs: [
             [Currency::Trx, Currency::Rub],
             [Currency::Doge, Currency::Rub]
@@ -29,15 +34,14 @@ test('order cancel by pairs and action works properly', function () {
 })->group('functional');
 
 test('order cancel by pairs works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": [
     "36987303",
     "36987294"
   ]
 }');
-    $result = $client->order->cancel(
+    $result = $this->client->order->cancel(
         currencyPairs: [
             [Currency::Trx, Currency::Rub],
             [Currency::Doge, Currency::Rub]
@@ -48,15 +52,14 @@ test('order cancel by pairs works properly', function () {
 })->group('functional');
 
 test('cancel all orders works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": [
     "36987021",
     "36987015"
   ]
 }');
-    $result = $client->order->cancel();
+    $result = $this->client->order->cancel();
 
     expect($result->success)->toBeTrue();
     expect($result->data[0])->toEqual(36987021);

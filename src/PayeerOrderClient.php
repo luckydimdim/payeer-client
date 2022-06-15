@@ -18,11 +18,8 @@ use Payeer\Responses\StatusResponse;
  */
 class PayeerOrderClient
 {
-    public function __construct(
-        string $uri,
-        string $id,
-        private readonly IService $service
-    ) { }
+    public function __construct(private readonly IService $service)
+    { }
 
     /**
      * User's orders list
@@ -101,6 +98,7 @@ class PayeerOrderClient
      * @param Action $action
      * @param float $amount
      * @param float $price
+     * @param float|null $stopPrice
      * @return CreateResponse
      * @throws ClientException
      */

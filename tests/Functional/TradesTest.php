@@ -6,7 +6,7 @@ use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('POST trades works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
+    $client = new PayeerClientMock('dummy_id', 'dummy_key');
     $client->setFake('{
   "success": true,
   "pairs": {

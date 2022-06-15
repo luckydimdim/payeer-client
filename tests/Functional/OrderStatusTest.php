@@ -2,14 +2,11 @@
 
 namespace Payeer\Tests\Functional;
 
-use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
-use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('order status works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
+        $client = new PayeerClientMock('dummy_id', 'dummy_key');
     $client->setFake('{
   "success": true,
   "order": {

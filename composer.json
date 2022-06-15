@@ -2,6 +2,12 @@
     "name": "leo/payeer-client",
     "type": "library",
     "description": "Payeer Trade API Client.",
+    "authors": [{
+        "name": "Dmitrii Litovchenko",
+        "email": "msk.roytop@gmail.com",
+        "homepage": "https://www.linkedin.com/in/dmitrii-litovchenko",
+        "role": "Developer"
+    }],
     "keywords": ["payeer", "client"],
     "license": "MIT",
     "require": {

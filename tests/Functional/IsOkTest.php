@@ -5,7 +5,7 @@ namespace Payeer\Tests\Functional;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 it('works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
+    $client = new PayeerClientMock('dummy_id', 'dummy_key');
     $client->setFake('{
   "success": true,
   "time": 13
@@ -14,5 +14,3 @@ it('works properly', function () {
 
     expect($result->time)->toEqual(13);
 })->group('functional');
-
-

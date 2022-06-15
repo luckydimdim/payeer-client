@@ -11,6 +11,10 @@ use Payeer\Transport;
  */
 class TransportMock extends Transport
 {
+    /**
+     * Used for testing
+     * @var array
+     */
     public array $fake = [];
 
     public function send(RequestBase $request): array
@@ -21,7 +25,7 @@ class TransportMock extends Transport
         // Signs request
         $requestMethod = $request->getMethod();
         $requestParams = $request->toArray();
-        $sign = $this->getSign($requestMethod, $requestParams, $this->id);
+        $sign = $this->getSign($requestMethod, $requestParams, $this->key);
 
         $response = $this->getClient()->request(
             $request->getMethod()->value,
@@ -35,7 +39,7 @@ class TransportMock extends Transport
         return $this->fake;
     }
 
-    protected function createClient(string $uri, string $id): Client
+    protected function createClient(string $id, string $uri): Client
     {
         return new ClientMock([
             'base_uri' => $uri,

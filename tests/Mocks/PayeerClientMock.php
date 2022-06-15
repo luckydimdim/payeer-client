@@ -20,8 +20,8 @@ class PayeerClientMock extends PayeerClient
         $this->service->getTransport()->fake = $fake;
     }
 
-    protected function createService(string $uri, string $id): Service
+    protected function createService(string $id, string $key, string $uri): Service
     {
-        return new ServiceMock($uri, $id);
+        return new ServiceMock($id, $key, $uri);
     }
 }

@@ -24,9 +24,9 @@ class Service implements IService
      */
     protected readonly ITransport $transport;
 
-    public function __construct(string $uri, string $id)
+    public function __construct(string $id, string $key, string $uri)
     {
-        $this->transport = $this->createTransport($uri, $id);
+        $this->transport = $this->createTransport($id, $key, $uri);
     }
 
     /**
@@ -96,12 +96,13 @@ class Service implements IService
     /**
      * Helper function for testing.
      * Instantiates Transport object.
-     * @param string $uri
      * @param string $id
+     * @param string $key
+     * @param string $uri
      * @return Transport
      */
-    protected function createTransport(string $uri, string $id): Transport
+    protected function createTransport(string $id, string $key, string $uri): Transport
     {
-        return new Transport($uri, $id);
+        return new Transport($id, $key, $uri);
     }
 }

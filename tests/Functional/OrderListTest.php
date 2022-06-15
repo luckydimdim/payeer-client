@@ -2,16 +2,22 @@
 
 namespace Payeer\Tests\Functional;
 
-use Cassandra\Uuid;
 use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
+beforeEach(function () {
+    $this->client = new PayeerClientMock('dummy_id', 'dummy_key');
+});
+
+afterEach(function () {
+    $this->client = null;
+});
+
 test('my orders list works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": {
     "36149941": {
@@ -103,7 +109,7 @@ test('my orders list works properly', function () {
     }
   }
 }');
-    $result = $client->order->list(
+    $result = $this->client->order->list(
         status: Status::Opened,
         currencyPairs: [
             [Currency::Btc, Currency::Usd],
@@ -117,8 +123,7 @@ test('my orders list works properly', function () {
 })->group('functional');
 
 test('order all history works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": {
     "36989301": {
@@ -169,7 +174,7 @@ test('order all history works properly', function () {
     }
   }
 }');
-    $result = $client->order->list(pageSize: 3);
+    $result = $this->client->order->list(pageSize: 3);
 
     expect($result->data)->toHaveCount(3);
     expect($result->data[2]->valueRemaining)->toEqual(1.00);
@@ -177,8 +182,7 @@ test('order all history works properly', function () {
 })->group('functional');
 
 test('order filtered history works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": {
     "28203919": {
@@ -230,7 +234,7 @@ test('order filtered history works properly', function () {
     }
   }
 }');
-    $result = $client->order->list(
+    $result = $this->client->order->list(
         status: Status::Canceled,
         currencyPairs: [
             [Currency::Btc, Currency::Usd],

@@ -6,9 +6,16 @@ use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
+beforeEach(function () {
+    $this->client = new PayeerClientMock('dummy_id', 'dummy_key');
+});
+
+afterEach(function () {
+    $this->client = null;
+});
+
 test('POST all my trades works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": {
     "14163029": {
@@ -53,7 +60,7 @@ test('POST all my trades works properly', function () {
     }
   }
 }');
-    $result = $client->myTrades(pageSize: 3);
+    $result = $this->client->myTrades(pageSize: 3);
 
     expect($result->data)->toHaveCount(3);
     expect($result->data[2]->makerTransactionId)->toEqual(1597904047);
@@ -61,8 +68,7 @@ test('POST all my trades works properly', function () {
 })->group('functional');
 
 test('POST filtered my trades works properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
-    $client->setFake('{
+    $this->client->setFake('{
   "success": true,
   "items": {
     "12259786": {
@@ -106,7 +112,7 @@ test('POST filtered my trades works properly', function () {
     }
   }
 }');
-    $result = $client->myTrades(
+    $result = $this->client->myTrades(
         currencyPairs: [
             [Currency::Btc, Currency::Usd],
             [Currency::Btc, Currency::Rub]

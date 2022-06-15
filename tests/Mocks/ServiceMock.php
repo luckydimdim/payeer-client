@@ -27,8 +27,11 @@ class ServiceMock extends Service
         return $this->transport;
     }
 
-    protected function createTransport(string $uri, string $id): Transport
-    {
-        return new TransportMock($uri, $id);
+    protected function createTransport(
+        string $id,
+        string $key,
+        string $uri
+    ): Transport {
+        return new TransportMock($id, $key, $uri);
     }
 }

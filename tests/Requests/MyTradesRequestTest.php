@@ -7,8 +7,8 @@ use Payeer\Tests\Mocks\ServiceMock;
 use Payeer\Tests\Mocks\TransportMock;
 
 beforeEach(function () {
-    $this->service = new ServiceMock(uri: 'dummy', id: 'dummy');
-    $this->transport = new TransportMock(uri: 'dummy', id: 'dummy');
+    $this->service = new ServiceMock('dummy_id', 'dummy_key', 'dummy_uri');
+    $this->transport = new TransportMock('dummy_id', 'dummy_key', 'dummy_uri');
 });
 
 afterEach(function () {

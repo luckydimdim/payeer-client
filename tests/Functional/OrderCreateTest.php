@@ -8,7 +8,7 @@ use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('order creates properly', function () {
-    $client = new PayeerClientMock(uri: 'dummy', id: 'dummy');
+    $client = new PayeerClientMock('dummy_id', 'dummy_key');
     $client->setFake('{
   "success": true,
   "order_id": 37054386,

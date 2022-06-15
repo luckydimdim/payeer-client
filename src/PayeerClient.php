@@ -33,10 +33,19 @@ class PayeerClient
      */
     public readonly PayeerOrderClient $order;
 
-    public function __construct(string $uri, string $id)
-    {
-        $this->service = $this->createService($uri, $id);
-        $this->order = new PayeerOrderClient($uri, $id, $this->service);
+    /**
+     * @param string $id
+     * @param string $key
+     * @param string $uri
+     * @throws ClientException
+     */
+    public function __construct(
+        string $id,
+        string $key,
+        string $uri = 'https://payeer.com/api/trade'
+    ) {
+        $this->service = $this->createService($id, $key, $uri);
+        $this->order = new PayeerOrderClient($this->service);
     }
 
     /**
@@ -162,15 +171,16 @@ class PayeerClient
 
     /**
      * Creates IService instance. Needed for testing purposes.
-     * @param string $uri
      * @param string $id
+     * @param string $key
+     * @param string $uri
      * @return Service
      * @throws ClientException
      */
-    protected function createService(string $uri, string $id): Service
+    protected function createService(string $id, string $key, string $uri): Service
     {
         try {
-            return new Service($uri, $id);
+            return new Service($id, $key, $uri);
         } catch (ServiceException $ex) {
             throw new ClientException($ex->getMessage());
         }

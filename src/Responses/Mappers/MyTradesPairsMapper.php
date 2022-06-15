@@ -5,10 +5,7 @@ namespace Payeer\Responses\Mappers;
 use Payeer\Enums\Action;
 use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
-use Payeer\Enums\Type;
 use Payeer\Responses\Models\MyTrade;
-use Payeer\Responses\Models\Trade;
-use Payeer\Responses\Models\Trades;
 use Spatie\DataTransferObject\Caster;
 
 /**
