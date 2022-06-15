@@ -1,5 +1,5 @@
 {
-    "name": "leo/payeer-client",
+    "name": "bobel/payeer-client",
     "type": "library",
     "description": "Payeer Trade API Client.",
     "authors": [{
