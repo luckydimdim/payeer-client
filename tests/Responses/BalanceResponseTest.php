@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\ServiceMock;
 
 beforeEach(function () {
@@ -79,10 +78,10 @@ it('BalanceResponse maps properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('balance', $serviceResponse);
+    $model = $this->service->getResponseModel('balance', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data)->toHaveCount(12);
-    expect($model->data[11]->currency)->toEqual(Currency::Trx);
+    expect($model->data[11]->currency)->toEqual("TRX");
     expect($model->data[10]->available)->toEqual(94.55549964);
 })->group('responses');

@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\ServiceMock;
@@ -109,12 +108,12 @@ test('ListResponse maps my_orders properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('list', $serviceResponse);
+    $model = $this->service->getResponseModel('list', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data)->toHaveCount(6);
     expect($model->data[5]->id)->toEqual(36995144);
-    expect($model->data[5]->currencyPair[0])->toEqual(Currency::Dash);
+    expect($model->data[5]->currencyPair[0])->toEqual("DASH");
     expect($model->data[5]->action)->toEqual(Action::Buy);
     expect($model->data[5]->status)->toEqual(Status::Opened);
     expect($model->data[5]->type)->toEqual(Type::Limit);
@@ -174,12 +173,12 @@ test('ListResponse maps my_history properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('list', $serviceResponse);
+    $model = $this->service->getResponseModel('list', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data)->toHaveCount(3);
     expect($model->data[2]->id)->toEqual(36995144);
-    expect($model->data[2]->currencyPair[0])->toEqual(Currency::Dash);
+    expect($model->data[2]->currencyPair[0])->toEqual("DASH");
     expect($model->data[2]->action)->toEqual(Action::Buy);
     expect($model->data[2]->status)->toEqual(Status::Processing);
     expect($model->data[2]->type)->toEqual(Type::Limit);

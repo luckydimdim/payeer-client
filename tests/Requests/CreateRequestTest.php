@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\ServiceMock;
@@ -18,8 +17,8 @@ afterEach(function () {
 });
 
 test('CreateRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('create', [
-        [[Currency::Btc, Currency::Usd]],
+    $request = $this->service->getRequestModel('create', [
+        [["BTC", "USD"]],
         Type::Limit,
         Action::Buy,
         3,

@@ -3,7 +3,6 @@
 namespace Payeer;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Exceptions\Client\ClientException;
 use Payeer\Exceptions\Client\IsOkException;
 use Payeer\Exceptions\Service\ServiceException;
@@ -64,7 +63,7 @@ class PayeerClient
 
     /**
      * Limits and currency pair rates request
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @return RatesResponse
      * @throws ClientException
      */
@@ -80,7 +79,7 @@ class PayeerClient
 
     /**
      * Prices change stats for the last 24 hours
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @return StatsResponse
      * @throws ClientException
      */
@@ -95,7 +94,7 @@ class PayeerClient
 
     /**
      * Prices change stats for the last 24 hours
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @return OrdersResponse
      * @throws ClientException
      */
@@ -110,7 +109,7 @@ class PayeerClient
 
     /**
      * Trades history
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @return TradesResponse
      * @throws ClientException
      */
@@ -125,7 +124,7 @@ class PayeerClient
 
     /**
      * My trades history
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @param Action $action
      * @param int|null $dateFrom
      * @param int|null $dateTo

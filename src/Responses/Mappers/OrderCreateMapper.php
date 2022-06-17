@@ -3,7 +3,6 @@
 namespace Payeer\Responses\Mappers;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Type;
 use Payeer\Responses\Models\CreatedOrder;
 use Spatie\DataTransferObject\Caster;
@@ -23,7 +22,7 @@ class OrderCreateMapper implements Caster
         $model = new CreatedOrder();
 
         $parts = explode('_', $value['pair']);
-        $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+        $model->currencyPair = [$parts[0], $parts[1]];
         $model->type = Type::from($value['type']);
         $model->action = Action::from($value['action']);
         $model->amount = $value['amount'];

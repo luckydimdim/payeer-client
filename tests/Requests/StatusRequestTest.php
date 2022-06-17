@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Tests\Mocks\ServiceMock;
 use Payeer\Tests\Mocks\TransportMock;
@@ -16,8 +15,8 @@ afterEach(function () {
 });
 
 it('StatsRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('stats', [
-        [[Currency::Btc, Currency::Usd]]
+    $request = $this->service->getRequestModel('stats', [
+        [["BTC", "USD"]]
     ]);
 
     $this->transport->send($request);
@@ -28,7 +27,7 @@ it('StatsRequest accepts proper POST params from service layer', function () {
 })->group('requests');
 
 it('StatsRequest accepts proper GET params from service layer', function () {
-    $request = $this->service->getRequest('stats', []);
+    $request = $this->service->getRequestModel('stats', []);
 
     $this->transport->send($request);
 

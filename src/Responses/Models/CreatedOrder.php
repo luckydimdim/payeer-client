@@ -3,7 +3,6 @@
 namespace Payeer\Responses\Models;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Type;
 
 /**
@@ -13,7 +12,7 @@ class CreatedOrder
 {
     public int $id;
     /**
-     * @var array<Currency, Currency>
+     * @var array<string, string>
      */
     public array $currencyPair;
 

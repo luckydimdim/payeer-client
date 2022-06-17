@@ -3,7 +3,6 @@
 namespace Payeer\Requests;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Type;
 
 /**
@@ -18,7 +17,7 @@ class CreateRequest extends RatesRequest
     public ?float $stop_price = null;
 
     /**
-     * @param array<Currency, Currency> $currencyPairs
+     * @param array<string, string> $currencyPairs
      * @param Type $type
      * @param Action $action
      * @param float $amount

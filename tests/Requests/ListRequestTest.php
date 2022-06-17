@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Enums\Status;
 use Payeer\Tests\Mocks\ServiceMock;
@@ -18,9 +17,9 @@ afterEach(function () {
 });
 
 test('ListRequest sent to my_orders API method', function () {
-    $request = $this->service->getRequest('list', [
+    $request = $this->service->getRequestModel('list', [
         Status::Opened,
-        [[Currency::Btc, Currency::Rub]],
+        [["BTC", "RUB"]],
         Action::Buy
     ]);
 
@@ -33,9 +32,9 @@ test('ListRequest sent to my_orders API method', function () {
 })->group('requests');
 
 test('ListRequest sent to my_history API method', function () {
-    $request = $this->service->getRequest('list', [
+    $request = $this->service->getRequestModel('list', [
         Status::Success,
-        [[Currency::Btc, Currency::Rub]],
+        [["BTC", "RUB"]],
         Action::Buy,
         time()*1000-1000,
         time()*1000,

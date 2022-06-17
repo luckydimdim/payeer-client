@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Tests\Mocks\ServiceMock;
 use Payeer\Tests\Mocks\TransportMock;
@@ -17,8 +16,8 @@ afterEach(function () {
 });
 
 it('MyTradesRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('myTrades', [
-        [[Currency::Btc, Currency::Rub]],
+    $request = $this->service->getRequestModel('myTrades', [
+        [["BTC", "RUB"]],
         Action::Buy,
         time()*1000-1000,
         time()*1000,

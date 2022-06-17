@@ -3,7 +3,6 @@
 namespace Payeer\Responses\Models;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 
 /**
@@ -17,7 +16,7 @@ class MyTrade
     public int $date;
 
     /**
-     * @var array<Currency, Currency>
+     * @var array<string, string>
      */
     public array $currencyPair;
 

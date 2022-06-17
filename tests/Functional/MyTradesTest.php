@@ -3,7 +3,6 @@
 namespace Payeer\Tests\Functional;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 beforeEach(function () {
@@ -114,8 +113,8 @@ test('POST filtered my trades works properly', function () {
 }');
     $result = $this->client->myTrades(
         currencyPairs: [
-            [Currency::Btc, Currency::Usd],
-            [Currency::Btc, Currency::Rub]
+            ["BTC", "USD"],
+            ["BTC", "RUB"]
         ],
         action: Action::Buy,
         dateFrom: 1630443600,

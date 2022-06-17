@@ -2,7 +2,6 @@
 
 namespace Payeer\Responses\Mappers;
 
-use Payeer\Enums\Currency;
 use Payeer\Responses\Models\Rate;
 use Spatie\DataTransferObject\Caster;
 
@@ -25,7 +24,7 @@ class RatesPairsMapper implements Caster
 
             $parts = explode('_', $currencies);
 
-            $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+            $model->currencyPair = [$parts[0], $parts[1]];
             $model->pricePrecision = $pair['price_prec'];
             $model->minPrice = $pair['min_price'];
             $model->maxPrice = $pair['max_price'];

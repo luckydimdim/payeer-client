@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Tests\Mocks\ServiceMock;
 use Payeer\Tests\Mocks\TransportMock;
@@ -17,9 +16,9 @@ afterEach(function () {
 });
 
 it('CancelRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('cancel', [
+    $request = $this->service->getRequestModel('cancel', [
         111,
-        [[Currency::Btc, Currency::Usd]],
+        [["BTC", "USD"]],
         Action::Buy
     ]);
 

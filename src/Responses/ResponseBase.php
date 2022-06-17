@@ -67,4 +67,13 @@ abstract class ResponseBase extends DataTransferObject
             default => new ApiException(),
         };
     }
+
+    /**
+     * Serializes an object to JSON format
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
+    }
 }

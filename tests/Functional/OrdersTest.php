@@ -2,7 +2,6 @@
 
 namespace Payeer\Tests\Functional;
 
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('POST orders works properly', function () {
@@ -64,8 +63,8 @@ test('POST orders works properly', function () {
   }
 }');
     $result = $client->orders([
-        [Currency::Btc, Currency::Usd],
-        [Currency::Btc, Currency::Rub]
+        ["BTC", "USD"],
+        ["BTC", "RUB"]
     ]);
 
     expect($result->data)->toHaveCount(2);

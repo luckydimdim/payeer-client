@@ -3,7 +3,6 @@
 namespace Payeer\Responses\Mappers;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Responses\Models\Trade;
 use Payeer\Responses\Models\Trades;
 use Spatie\DataTransferObject\Caster;
@@ -26,7 +25,7 @@ class TradesPairsMapper implements Caster
             $model = new Trades();
 
             $parts = explode('_', $currencies);
-            $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+            $model->currencyPair = [$parts[0], $parts[1]];
 
             $model->trades = $this->mapTrades($pair);
 

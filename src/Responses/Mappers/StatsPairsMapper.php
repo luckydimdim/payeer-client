@@ -2,7 +2,6 @@
 
 namespace Payeer\Responses\Mappers;
 
-use Payeer\Enums\Currency;
 use Payeer\Responses\Models\Stats;
 use Spatie\DataTransferObject\Caster;
 
@@ -25,7 +24,7 @@ class StatsPairsMapper implements Caster
 
             $parts = explode('_', $currencies);
 
-            $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+            $model->currencyPair = [$parts[0], $parts[1]];
             $model->ask = $pair['ask'];
             $model->bid = $pair['bid'];
             $model->last = $pair['last'];

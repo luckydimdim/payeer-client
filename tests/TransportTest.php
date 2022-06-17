@@ -14,7 +14,7 @@ afterEach(function () {
 });
 
 it('has time label and signature', function () {
-    $request = $this->service->getRequest('rates', []);
+    $request = $this->service->getRequestModel('rates', []);
 
     $this->transport->send($request);
 

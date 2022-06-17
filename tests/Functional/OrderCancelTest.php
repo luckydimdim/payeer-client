@@ -3,7 +3,6 @@
 namespace Payeer\Tests\Functional;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 beforeEach(function () {
@@ -24,8 +23,8 @@ test('order cancel by pairs and action works properly', function () {
 }');
     $result = $this->client->order->cancel(
         currencyPairs: [
-            [Currency::Trx, Currency::Rub],
-            [Currency::Doge, Currency::Rub]
+            ["TRX", "RUB"],
+            ["DOGE", "RUB"]
         ],
         action: Action::Buy);
 
@@ -43,8 +42,8 @@ test('order cancel by pairs works properly', function () {
 }');
     $result = $this->client->order->cancel(
         currencyPairs: [
-            [Currency::Trx, Currency::Rub],
-            [Currency::Doge, Currency::Rub]
+            ["TRX", "RUB"],
+            ["DOGE", "RUB"]
         ]);
 
     expect($result->success)->toBeTrue();

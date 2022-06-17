@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\PayeerClient;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
@@ -13,6 +12,6 @@ it('can create mock services chain', function () {
     $client = new PayeerClientMock('dummy_id', 'dummy_key');
 
     expect($client->rates([
-        [Currency::Btc, Currency::Usd]
+        ["BTC", "USD"]
     ]))->toBeObject();
 })->group('client');;

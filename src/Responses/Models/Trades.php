@@ -2,15 +2,13 @@
 
 namespace Payeer\Responses\Models;
 
-use Payeer\Enums\Currency;
-
 /**
  * Trade response model element
  */
 class Trades
 {
     /**
-     * @var array<Currency, Currency>
+     * @var array<string, string>
      */
     public array $currencyPair;
 

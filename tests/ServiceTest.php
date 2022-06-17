@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\Requests\RatesRequest;
 use Payeer\Responses\RatesResponse;
 use Payeer\Tests\Mocks\ServiceMock;
@@ -14,13 +13,13 @@ afterEach(function () {
 });
 
 it('instantiates proper request model', function () {
-    $result = $this->service->getRequest('rates', [
-        [[Currency::Btc, Currency::Usd]]
+    $result = $this->service->getRequestModel('rates', [
+        [["BTC", "USD"]]
     ]);
     expect($result)->toBeInstanceOf(RatesRequest::class);
 })->group('service');
 
 it('instantiates proper response model', function () {
-    $result = $this->service->getResponse('rates', []);
+    $result = $this->service->getResponseModel('rates', []);
     expect($result)->toBeInstanceOf(RatesResponse::class);
 })->group('service');

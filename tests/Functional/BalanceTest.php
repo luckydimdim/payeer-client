@@ -2,7 +2,6 @@
 
 namespace Payeer\Tests\Functional;
 
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('POST balance works properly', function () {
@@ -74,7 +73,7 @@ test('POST balance works properly', function () {
 }');
     $result = $client->balance();
 
-    expect($result->data[0]->currency)->toEqual(Currency::Usd);
+    expect($result->data[0]->currency)->toEqual("USD");
     expect($result->data[1]->available)->toEqual(1548.99);
 })->group('functional');
 

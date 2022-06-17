@@ -3,7 +3,6 @@
 namespace Payeer;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Exceptions\Client\ClientException;
@@ -24,7 +23,7 @@ class PayeerOrderClient
     /**
      * User's orders list
      * @param Status $status
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @param Action $action
      * @param int|null $dateFrom
      * @param int|null $dateTo
@@ -59,7 +58,7 @@ class PayeerOrderClient
     /**
      * Cancels orders by criteria or all of them
      * @param int|null $id
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @param Action $action
      * @return CancelResponse
      * @throws ClientException
@@ -93,7 +92,7 @@ class PayeerOrderClient
 
     /**
      * Creates order
-     * @param array<Currency, Currency> $currencyPairs
+     * @param array<string, string> $currencyPairs
      * @param Type $type
      * @param Action $action
      * @param float $amount

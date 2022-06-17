@@ -20,13 +20,22 @@ use Payeer\Responses\ResponseFactory;
 class Service implements IService
 {
     /**
-     * @var ITransport payeer endpoint interaction object
+     * @var ITransport|null payeer endpoint interaction object
      */
-    protected readonly ITransport $transport;
+    protected ?ITransport $transport = null;
 
-    public function __construct(string $id, string $key, string $uri)
-    {
-        $this->transport = $this->createTransport($id, $key, $uri);
+    /**
+     * If response is required on the caller's side
+     * @var bool
+     */
+    private bool $enableResponse = true;
+
+    public function __construct(
+        private readonly string $id,
+        private readonly string $key,
+        private readonly string $uri
+    ) {
+        $this->transport = $this->getTransport();
     }
 
     /**
@@ -35,12 +44,12 @@ class Service implements IService
      * Sends request to the Transport level.
      * @param string $method
      * @param array $args
-     * @return ResponseBase
-     * @throws \Exception
+     * @return ResponseBase|null
+     * @throws ApiErrorException
      */
-    public function __call(string $method, array $args): ResponseBase
+    public function __call(string $method, array $args): ?ResponseBase
     {
-        $request = $this->getRequest($method, $args);
+        $request = $this->getRequestModel($method, $args);
 
         try {
             $result = $this->transport->send($request);
@@ -48,7 +57,12 @@ class Service implements IService
             throw new ApiErrorException($ex->getMessage());
         }
 
-        $response = $this->getResponse($method, $result);
+        // Response is not required
+        if (!$this->enableResponse) {
+            return null;
+        }
+
+        $response = $this->getResponseModel($method, $result);
         $response->handleApiErrors();
 
         return $response;
@@ -61,7 +75,7 @@ class Service implements IService
      * @return RequestBase
      * @throws \Exception
      */
-    protected function getRequest(string $method, array $args): RequestBase
+    protected function getRequestModel(string $method, array $args): RequestBase
     {
         try {
             // Instantiates a proper Request class
@@ -80,7 +94,7 @@ class Service implements IService
      * @return ResponseBase
      * @throws \Exception
      */
-    protected function getResponse(string $method, array $result): ResponseBase
+    public function getResponseModel(string $method, array $result): ResponseBase
     {
         try {
             // Instantiates a proper Response class
@@ -94,15 +108,27 @@ class Service implements IService
     }
 
     /**
-     * Helper function for testing.
      * Instantiates Transport object.
-     * @param string $id
-     * @param string $key
-     * @param string $uri
      * @return Transport
      */
-    protected function createTransport(string $id, string $key, string $uri): Transport
+    public function getTransport(): ITransport
     {
-        return new Transport($id, $key, $uri);
+        // Returns transport instantiated earlier
+        if ($this->transport) {
+            return $this->transport;
+        }
+
+        $uriParts = parse_url($this->uri);
+
+        // Instantiate corresponding Transport class
+        if (in_array($uriParts['scheme'], ['ws', 'wss'])) {
+            // WebSocket doesn't respond after request,
+            // so we don't need to handle responses
+            $this->enableResponse = false;
+
+            return new WebSocketTransport($this->id, $this->key, $this->uri);
+        } else {
+            return new Transport($this->id, $this->key, $this->uri);
+        }
     }
 }

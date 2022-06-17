@@ -2,14 +2,12 @@
 
 namespace Payeer\Responses\Models;
 
-use Payeer\Enums\Currency;
-
 /**
  * Balance response model element
  */
 class Balance
 {
-    public Currency $currency;
+    public string $currency;
 
     // TODO: work on the type of these params
     public float $total;

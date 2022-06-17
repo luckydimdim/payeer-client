@@ -15,7 +15,7 @@ afterEach(function () {
 });
 
 it('BalanceRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('balance', []);
+    $request = $this->service->getRequestModel('balance', []);
 
     $this->transport->send($request);
 

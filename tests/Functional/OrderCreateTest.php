@@ -3,7 +3,6 @@
 namespace Payeer\Tests\Functional;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
@@ -22,7 +21,7 @@ test('order creates properly', function () {
   }
 }');
     $result = $client->order->create(
-        currencyPairs: [[Currency::Trx, Currency::Usd]],
+        currencyPairs: [["TRX", "USD"]],
         type: Type::Limit,
         action: Action::Buy,
         amount: 10,

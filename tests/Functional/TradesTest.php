@@ -2,7 +2,6 @@
 
 namespace Payeer\Tests\Functional;
 
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('POST trades works properly', function () {
@@ -49,8 +48,8 @@ test('POST trades works properly', function () {
   }
 }');
     $result = $client->trades([
-        [Currency::Btc, Currency::Usd],
-        [Currency::Btc, Currency::Rub]
+        ["BTC", "USD"],
+        ["BTC", "RUB"]
     ]);
 
     expect($result->data[0]->trades[1]->id)->toEqual(14162734);

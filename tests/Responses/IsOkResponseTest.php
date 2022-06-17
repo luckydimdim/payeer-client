@@ -17,7 +17,7 @@ it('IsOk response exposes properly filled model', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('isOk', $serviceResponse);
+    $model = $this->service->getResponseModel('isOk', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->time !== 0)->toBeTrue();

@@ -3,7 +3,6 @@
 namespace Payeer\Requests;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 
 /**
@@ -18,7 +17,7 @@ class MyTradesRequest extends RatesRequest
     public ?int $limit = null;
 
     /**
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @param Action $action
      * @param int|null $dateFrom
      * @param int|null $dateTo

@@ -12,26 +12,22 @@ use Payeer\Transport;
  */
 class ServiceMock extends Service
 {
-    public function getRequest(string $method, array $args): RequestBase
+    public function getRequestModel(string $method, array $args): RequestBase
     {
-        return parent::getRequest($method, $args);
+        return parent::getRequestModel($method, $args);
     }
 
-    public function getResponse(string $method, array $result): ResponseBase
+    public function getResponseModel(string $method, array $result): ResponseBase
     {
-        return parent::getResponse($method, $result);
+        return parent::getResponseModel($method, $result);
     }
 
     public function getTransport(): TransportMock
     {
-        return $this->transport;
-    }
+        if (!$this->transport) {
+            $this->transport = new TransportMock('dummy', 'dummy', 'dummy');
+        }
 
-    protected function createTransport(
-        string $id,
-        string $key,
-        string $uri
-    ): Transport {
-        return new TransportMock($id, $key, $uri);
+        return $this->transport;
     }
 }

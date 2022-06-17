@@ -1,7 +1,6 @@
 <?php
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\ServiceMock;
 
 beforeEach(function () {
@@ -60,11 +59,11 @@ it('MyTradesResponse maps properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('myTrades', $serviceResponse);
+    $model = $this->service->getResponseModel('myTrades', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data)->toHaveCount(3);
-    expect($model->data[0]->currencyPair[1])->toEqual(Currency::Rub);
+    expect($model->data[0]->currencyPair[1])->toEqual("RUB");
     expect($model->data[1]->id)->toEqual(14175584);
     expect($model->data[2]->action)->toEqual(Action::Buy);
     expect($model->data[2]->makerTransactionId)->toEqual(1597904047);

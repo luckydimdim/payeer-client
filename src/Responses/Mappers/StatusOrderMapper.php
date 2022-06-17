@@ -3,7 +3,6 @@
 namespace Payeer\Responses\Mappers;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Responses\Models\PayeerOrder;
@@ -28,7 +27,7 @@ class StatusOrderMapper implements Caster
         $model->date = $value['date'];
 
         $parts = explode('_', $value['pair']);
-        $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+        $model->currencyPair = [$parts[0], $parts[1]];
 
         $model->action = Action::from($value['action']);
         $model->type = Type::from($value['type']);

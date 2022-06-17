@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Tests\Mocks\ServiceMock;
 
@@ -69,11 +68,11 @@ it('Order StatusResponse maps properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('status', $serviceResponse);
+    $model = $this->service->getResponseModel('status', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data->status)->toEqual(Status::Success);
-    expect($model->data->currencyPair[0])->toEqual(Currency::Trx);
+    expect($model->data->currencyPair[0])->toEqual("TRX");
     expect($model->data->trades)->toHaveCount(3);
     expect($model->data->trades[2]->status)->toEqual(Status::Success);
 })->group('responses');

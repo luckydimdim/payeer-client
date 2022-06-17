@@ -2,7 +2,6 @@
 
 namespace Payeer\Requests;
 
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 
 /**
@@ -13,7 +12,7 @@ class RatesRequest extends RequestBase
     public string $pair = '';
 
     /**
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
      */
     public function __construct(array $currencyPairs = [])
@@ -32,7 +31,7 @@ class RatesRequest extends RequestBase
     }
 
     /**
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @return string "BTC_USD,BTS_RUB"
      * @throws \Exception
      */
@@ -46,7 +45,7 @@ class RatesRequest extends RequestBase
 
         foreach ($currencyPairs as $currencyPair) {
             if ($this->validateParams($currencyPair)) {
-                $result[] = $currencyPair[0]->value . '_'. $currencyPair[1]->value;
+                $result[] = $currencyPair[0] . '_'. $currencyPair[1];
             }
         }
 
@@ -54,7 +53,7 @@ class RatesRequest extends RequestBase
     }
 
     /**
-     * @param array<Currency, Currency> $currencyPair
+     * @param array<string, string> $currencyPair
      * @return bool
      * @throws \Exception TODO: introduce own exception types
      */
@@ -64,8 +63,7 @@ class RatesRequest extends RequestBase
             throw new \Exception('Incorrect parameters format.');
         }
 
-        if (!$currencyPair[0] instanceof Currency
-            || !$currencyPair[1] instanceof Currency) {
+        if (!is_string($currencyPair[0]) || !is_string($currencyPair[1])) {
             throw new \Exception('Incorrect parameters type.');
         }
 

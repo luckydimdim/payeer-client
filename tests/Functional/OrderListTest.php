@@ -3,7 +3,6 @@
 namespace Payeer\Tests\Functional;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\Status;
 use Payeer\Enums\Type;
 use Payeer\Tests\Mocks\PayeerClientMock;
@@ -112,8 +111,8 @@ test('my orders list works properly', function () {
     $result = $this->client->order->list(
         status: Status::Opened,
         currencyPairs: [
-            [Currency::Btc, Currency::Usd],
-            [Currency::Trx, Currency::Usd]
+            ["BTC", "USD"],
+            ["TRX", "USD"]
         ],
         action: Action::Buy);
 
@@ -237,8 +236,8 @@ test('order filtered history works properly', function () {
     $result = $this->client->order->list(
         status: Status::Canceled,
         currencyPairs: [
-            [Currency::Btc, Currency::Usd],
-            [Currency::Btc, Currency::Rub]
+            ["BTC", "USD"],
+            ["BTC", "RUB"]
         ],
         action: Action::Buy,
         dateFrom: 1630443600,

@@ -20,7 +20,7 @@ it('CancelResponse maps properly', function () {
 }';
     $serviceResponse = json_decode($serviceResponse, true);
 
-    $model = $this->service->getResponse('cancel', $serviceResponse);
+    $model = $this->service->getResponseModel('cancel', $serviceResponse);
 
     expect($model->success)->toBeTrue();
     expect($model->data)->toHaveCount(2);

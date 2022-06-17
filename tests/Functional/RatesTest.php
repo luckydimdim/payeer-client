@@ -2,7 +2,6 @@
 
 namespace Payeer\Tests\Functional;
 
-use Payeer\Enums\Currency;
 use Payeer\Tests\Mocks\PayeerClientMock;
 
 test('GET all rates works properly', function () {
@@ -51,7 +50,7 @@ test('GET all rates works properly', function () {
     $result = $client->rates();
 
     expect($result->limits[0]->limit)->toEqual(600);
-    expect($result->data[0]->currencyPair)->toEqual([Currency::Btc, Currency::Usd]);
+    expect($result->data[0]->currencyPair)->toEqual(["BTC", "USD"]);
     expect($result->data[2]->maxPrice)->toEqual(72173.39);
 })->group('functional');
 

@@ -1,6 +1,5 @@
 <?php
 
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 use Payeer\Requests\RatesRequest;
 use Payeer\Tests\Mocks\ServiceMock;
@@ -24,32 +23,32 @@ test('getPairs can handle empty input', function () {
 
 test('getPairs parses enums to string properly', function () {
     expect($this->request->getPairs([
-        [Currency::Btc, Currency::Usd]
+        ["BTC", "USD"]
     ]))->toEqual('BTC_USD');
 })->group('requests');
 
 test('getPairs parses multiple pairs correctly', function () {
     expect($this->request->getPairs([
-        [Currency::Btc, Currency::Usd],
-        [Currency::Btc, Currency::Rub]
+        ["BTC", "USD"],
+        ["BTC", "RUB"]
     ]))->toEqual('BTC_USD,BTC_RUB');
 })->group('requests');
 
 test('validateParams handles incorrect number of elements in a pair', function () {
-    $this->request->validateParams([Currency::Btc]);
+    $this->request->validateParams(["BTC"]);
 })->throws('Incorrect parameters format.')->group('requests');
 
 test('validateParams handles incorrect type of pair elements', function () {
-    $this->request->validateParams([Currency::Btc, 'USD']);
+    $this->request->validateParams([2, 'USD']);
 })->throws('Incorrect parameters type.')->group('requests');
 
 test('validateParams handles incorrect pair elements combinations', function () {
-    $this->request->validateParams([Currency::Btc, Currency::Btc]);
+    $this->request->validateParams(["BTC", "BTC"]);
 })->throws('Incorrect parameters combination.')->group('requests');
 
 it('RatesRequest accepts proper POST params from service layer', function () {
-    $request = $this->service->getRequest('rates', [
-        [[Currency::Btc, Currency::Usd]]
+    $request = $this->service->getRequestModel('rates', [
+        [["BTC", "USD"]]
     ]);
 
     $this->transport->send($request);
@@ -60,7 +59,7 @@ it('RatesRequest accepts proper POST params from service layer', function () {
 })->group('requests');
 
 it('RatesRequest accepts proper GET params from service layer', function () {
-    $request = $this->service->getRequest('rates', []);
+    $request = $this->service->getRequestModel('rates', []);
 
     $this->transport->send($request);
 

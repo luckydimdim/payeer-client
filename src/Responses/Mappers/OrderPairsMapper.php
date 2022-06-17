@@ -2,7 +2,6 @@
 
 namespace Payeer\Responses\Mappers;
 
-use Payeer\Enums\Currency;
 use Payeer\Responses\Models\Ask;
 use Payeer\Responses\Models\Order;
 use Spatie\DataTransferObject\Caster;
@@ -26,7 +25,7 @@ class OrderPairsMapper implements Caster
 
             $parts = explode('_', $currencies);
 
-            $model->currencyPair = [Currency::from($parts[0]), Currency::from($parts[1])];
+            $model->currencyPair = [$parts[0], $parts[1]];
             $model->ask = $pair['ask'];
             $model->bid = $pair['bid'];
 

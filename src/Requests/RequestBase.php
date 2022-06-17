@@ -69,4 +69,13 @@ abstract class RequestBase extends DataTransferObject
     {
         $this->uri = $uri;
     }
+
+    /**
+     * Serializes an object to JSON format
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
+    }
 }

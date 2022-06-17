@@ -3,7 +3,6 @@
 namespace Payeer\Requests;
 
 use Payeer\Enums\Action;
-use Payeer\Enums\Currency;
 use Payeer\Enums\HttpMethod;
 
 /**
@@ -31,7 +30,7 @@ class CancelRequest extends RatesRequest
     public string $action = '';
 
     /**
-     * @param array<array<Currency, Currency>> $currencyPairs
+     * @param array<array<string, string>> $currencyPairs
      * @throws \Spatie\DataTransferObject\Exceptions\UnknownProperties
      */
     public function __construct(
